@@ -90,6 +90,9 @@ class DataSiswa extends CI_Controller
           <li><a role="menuitem" tabindex="-1" href="' . site_url('edit-siswa/') . $pegSiswa->id_siswa . '" data-toggle="tooltip" title="Detail" target="">
             <i class="fa fa-pencil" style="color:#f39c12"></i>Edit
           </a></li>
+          <li><a role="menuitem" tabindex="-1" href="' . site_url('detail-siswa/') . $pegSiswa->id_siswa . '" data-toggle="tooltip" title="Detail" target="">
+            <i class="glyphicon glyphicon-eye-open	" style="color:#f39c12"></i>Detail
+          </a></li>
           <li><a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="hapusSiswa(' . "'" . $pegSiswa->id_siswa . "'" . ')" data-toggle="tooltip" title="Hapus" target="">
              <i class="fa fa-trash" style="color:#ff0000"></i>Hapus
           </a></li>
@@ -119,6 +122,26 @@ class DataSiswa extends CI_Controller
     echo json_encode($output);
   }
 
+  public function detailSiswa()
+  {
+    $ids = $this->uri->segment(2);
+    $result = $this->db->query("SELECT * FROM siswa WHERE id_siswa = '$ids'")->row_array();
+    if(!$result) {
+      return redirect('data-siswa');
+    }
+    $id = $this->session->userdata('id_user');
+    // var_dump($id_siswa);die();
+    $this->load->view('backend/layouts/wrapper', [
+      'content' => 'backend/admin/detailSiswa',
+      'title'   => 'Detail Data Siswa',
+      'userdata' => $id,
+      'profile' => $this->user_m->profile($id),
+      'agama' => $this->admin_m->getAgama(),
+      'kelas' => $this->kelas_m->getKelas(),
+      'user'  =>  $this->db->query("SELECT * FROM siswa WHERE id_siswa = '$ids'")->row_array(),
+    ], FALSE);
+  }
+
   public function editSiswa()
   {
     $id = $this->session->userdata('id_user');
@@ -135,7 +158,8 @@ class DataSiswa extends CI_Controller
     ], FALSE);
   }
 
-  public function saveEdit(){
+  public function saveEdit()
+  {
     $input = $this->input->post();
     $id_siswa = $input['id_siswa'];
     // var_dump($id_siswa);die();
@@ -143,22 +167,22 @@ class DataSiswa extends CI_Controller
     // if (!$this->form_validation->run()) {
     //   echo json_encode(['status' => FALSE]);
     // } else {
-      $data = [
-        'id_siswa' => $id_siswa,
-        'id_agama' => $input['agama'],
-        'id_kelas' => $input['kelas'],
-        'nis' => $input['nis'],
-        'nama' => $input['nama'],
-        'no_hp' => $input['no_hp'],
-        'alamat' => $input['alamat'],
-        'tempat_lahir' => $input['tempat_lahir'],
-        'tanggal_lahir' => $input['tanggal_lahir'],
-        'jenis_kelamin' => $input['gender']
-      ];
+    $data = [
+      'id_siswa' => $id_siswa,
+      'id_agama' => $input['agama'],
+      'id_kelas' => $input['kelas'],
+      'nis' => $input['nis'],
+      'nama' => $input['nama'],
+      'no_hp' => $input['no_hp'],
+      'alamat' => $input['alamat'],
+      'tempat_lahir' => $input['tempat_lahir'],
+      'tanggal_lahir' => $input['tanggal_lahir'],
+      'jenis_kelamin' => $input['gender']
+    ];
 
-      $this->siswa_m->saveEditSiswa($data, $id_siswa);
-      echo json_encode(['status' => TRUE]);
-      // var_dump($data);
+    $this->siswa_m->saveEditSiswa($data, $id_siswa);
+    echo json_encode(['status' => TRUE]);
+    // var_dump($data);
     // }
 
   }

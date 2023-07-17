@@ -2,7 +2,6 @@
 <section class="content">
   <div class="row">
     <div class="col-md-12">
-      <!-- Custom Tabs (Pulled to the right) -->
       <div class="nav-tabs-custom">
         <ul class="nav nav-tabs pull-right">
           <li class="pull-left header"><i class="fa fa-th"></i> Kelas</li>
@@ -46,16 +45,10 @@
               </center>
             </form>
           </div>
-          <!-- /.tab-pane -->
         </div>
-        <!-- /.tab-content -->
       </div>
-      <!-- nav-tabs-custom -->
     </div>
-
-    <!-- Absensi -->
     <div class="col-md-12">
-      <!-- Custom Tabs (Pulled to the right) -->
       <div class="nav-tabs-custom">
         <ul class="nav nav-tabs pull-right">
           <li class="pull-left header"><i class="fa fa-users"></i> Absensi</li>
@@ -70,11 +63,12 @@
                   <th>Nama</th>
                   <th>Aksi</th>
                 </thead>
+                
                 <tbody>
                   <?php foreach ($siswa as $sis) : ?>
                     <input type="hidden" name="id_siswa[]" value="<?= $sis->id_siswa; ?>">
                     <input type="hidden" name="id_kelas" value="<?= $id_kelas; ?>">
-                    <input type="hidden" name="id_mapel" value="<?= $id_mapel; ?>">
+                    <input type="hidden" name="id_mapel" value="<?= $pelajaran; ?>">
                     <tr>
                       <td><?= date("d-m-Y") ?></td>
                       <td><?= $sis->nis; ?></td>
@@ -97,15 +91,10 @@
               <?php } else { ?>
                 <button class="btn btn-primary">Kirim Absensi</button>
               <?php } ?>
-              <!-- <button class="btn btn-primary" disabled>Kirim Absensi</button> -->
-
             </form>
           </div>
-          <!-- /.tab-pane -->
         </div>
-        <!-- /.tab-content -->
       </div>
-      <!-- nav-tabs-custom -->
     </div>
   </div>
 </section>

@@ -9,6 +9,16 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body">
+    <?php if($this->session->flashdata("success")) :  ?>
+        <div class="alert alert-success">
+          <?= $this->session->flashdata("success"); ?>
+        </div>
+        <?php endif; ?>
+      <?php if($this->session->flashdata("error")) :  ?>
+        <div class="alert alert-danger">
+          <?= $this->session->flashdata("error"); ?>
+        </div>
+        <?php endif; ?>
       <form action="" method="post" id="form-mapel">
         <div class="form-group row">
           <label for="mapel" class=" col-sm-2 text-center">Mata Pelajaran</label>
@@ -24,9 +34,7 @@
     </div>
     <!-- /.box-body -->
     <div class="box-footer">
-      <div class="row">
-        <label for="mapel" class=" col-sm-2 text-center">Data Mata Pelajaran</label>
-        <div class="col-sm-8">
+        <div class="table-responsive">
           <table class="table table-hover table-striped" style="width:100%" id="dataMapel">
             <thead>
               <th>No.</th>
@@ -35,8 +43,6 @@
             </thead>
           </table>
         </div>
-        <div class="col-sm-2"></div>
-      </div>
     </div>
   </div>
 </section>

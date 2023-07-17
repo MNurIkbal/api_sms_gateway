@@ -84,16 +84,35 @@ class Kelas extends CI_Controller
   {
     $id = $this->session->userdata('id_user');
     $id_siswa = $this->uri->segment(2);
+    
     // var_dump($id_siswa);die();
     $this->load->view('backend/layouts/wrapper', [
       'content' => 'backend/admin/editKelas',
       'title'   => 'Edit Data Kelas',
       'profile' => $this->user_m->profile($id),
       'kelas' => $this->kelas_m->getKelas(),
+      'room'  =>  $this->db->query("SELECT * FROM kelas WHERE id_kelas = '$id_siswa'")->row_array(),
       'userdata' => $id,
-      'dataKelas' => $this->kelas_m->edit($id_kelas)
+      'id'  =>  $id_siswa,
+      // 'dataKelas' => $this->kelas_m->edit($id_kelas)
     ], FALSE);
   
+  }
+
+  public function edit()
+  {
+    $id = $this->input->post('id');
+    $kelas = $this->input->post('kelas');
+
+    $result = $this->db->query("UPDATE kelas SET kelas = '$kelas' WHERE id_kelas = '$id'");
+    if($result) {
+      $this->session->set_flashdata('success','Data Berhasil Diupdate');
+      return redirect('kelas');
+    } else {
+      $this->session->set_flashdata('error','Data Gagal Diupdate');
+      return redirect('kelas');
+    }
+    
   }
 
   public function hapusKelas($id)

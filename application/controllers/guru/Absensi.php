@@ -22,8 +22,9 @@ class Absensi extends CI_Controller
   {
     $id = $this->session->userdata('id_user');
     $id_kelas = $this->input->post('kelas');
+    $id_mapel = $this->input->post('mapel');
     // echo $id_kelas;
-    // // die();
+    // // die();id
     $mapel = $this->db->query("SELECT * FROM mapel_guru WHERE user_id = '$id'")->result_array();
     $this->load->view('backend/layouts/wrapper', [
       'content' => 'backend/guru/absensi',
@@ -33,7 +34,8 @@ class Absensi extends CI_Controller
       'kelas' => $this->kelas_m->getKelas(),
       'siswa' => $this->siswa_m->getSiswa($id_kelas),
       'userdata' => $id,
-      'id_kelas' => $id_kelas
+      'id_kelas' => $id_kelas,
+      'pelajaran'  =>$id_mapel
     ], FALSE);
   }
 
@@ -48,7 +50,7 @@ class Absensi extends CI_Controller
 
     foreach ($siswa as $row) {
       $save_siswa = "nama : " . $row .  " - Ket : " . $ket[$index] . "<br>";
-      $date = date("Ymd");
+      $date = date("Y-m-d");
       $tahun = date("Y");
       $bulan = date("m");
       $hari = date("d");
@@ -67,28 +69,31 @@ class Absensi extends CI_Controller
       '$keterangan'
   )");
 
-
       if ($keterangan == "Alpha") {
 
         $siswa_result = $this->db->query("SELECT * FROM siswa WHERE id_siswa = '$row'")->row_array();
         $tujuan = $siswa_result['no_hp'];
         $nama = $siswa_result['nama'];
         $token = "e2781388bf239590092f08d63af2603b";
+        $nama_kelas = $this->db->query("SELECT * FROM kelas WHERE id_kelas = '$id_kelas'")->row_array();
+        $nama_mapel = $this->db->query("SELECT * FROM mapel WHERE id_mapel = '$id_mapel'")->row_array();
+        $name_kelas = $nama_kelas['kelas'];
+        $name_mapel = $nama_mapel['nama_mapel'];
         $waktu = date("d, F Y H:i:s");
-        $pesan = "Pemberitahuan siswa bernama $nama hari ini tidak masuk sekolah di karenakan Alpha pada tanggal $waktu";
-        $endCode = urlencode($pesan);
-        $url = "https://websms.co.id/api/smsgateway-otp?token=$token&to=$tujuan&msg=$endCode";
+        $pesan = "Pemberitahuan siswa bernama $nama kelas $name_kelas pelajaran $name_mapel hari ini tidak masuk sekolah di karenakan Alpha pada tanggal $waktu";
+        // $endCode = urlencode($pesan);
+        // $url = "https://websms.co.id/api/smsgateway-otp?token=$token&to=$tujuan&msg=$endCode";
 
-        $header = array(
-          'Accept: application/json',
-        );
+        // $header = array(
+        //   'Accept: application/json',
+        // );
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        $result = curl_exec($ch);
+        // $ch = curl_init();
+        // curl_setopt($ch, CURLOPT_URL, $url);
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        // curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        // $result = curl_exec($ch);
       }
     }
     $this->session->set_flashdata('success', 'Data Berhasil Ditambahkan');

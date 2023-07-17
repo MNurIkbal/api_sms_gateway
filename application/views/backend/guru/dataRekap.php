@@ -30,7 +30,7 @@
                 <!-- <input type="text" class="form-control date" id="datepickerTEXT" style="width:30%" value="08/2020"> -->
                 <br />
                 <button class="btn btn-success">Pilih</button>
-                <a href="<?= site_url('data-rekap'); ?>" class="btn btn-warning">Reset</a>
+                
               </center>
             </form>
           </div>

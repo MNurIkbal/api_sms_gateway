@@ -42,6 +42,28 @@ class DataGuru extends CI_Controller
     ], FALSE);
   }
 
+  public function detailGuru()
+  {
+    $ids = $this->uri->segment(2);
+    $result = $this->db->query("SELECT * FROM user WHERE id_user = '$ids'")->row_array();
+    if(!$result){
+      return redirect("data-guru");
+    }
+
+    $id = $this->session->userdata('id_user');
+    $this->load->view('backend/layouts/wrapper', [
+      'content' => 'backend/admin/detailGuru',
+      'title' => 'Detail Guru',
+      'profile' => $this->user_m->profile($id),
+      'agama' => $this->admin_m->getAgama(),
+      'mapel' => $this->mapel_m->getMapel(),
+      'userdata' => $id,
+      'id_users'=>  $ids,
+      'user'  =>  $result
+    ], FALSE);
+    
+  }
+
   public function unameValid()
   {
     $username = $this->input->post('username');
@@ -146,9 +168,13 @@ class DataGuru extends CI_Controller
 
       // $temp[] = htmlspecialchars(date('d-m-Y / H:i', $pegGuru->submit_at), ENT_QUOTES, 'UTF-8');
       $temp[] = '
-      <a href="' . site_url('edit-guru/') . $pegGuru->id_user . '" class="btn btn-default btn-sm" data-toggle="tooltip" title="Detail" target="">
+      <a href="' . site_url('edit-guru/') . $pegGuru->id_user . '" class="btn btn-default btn-sm" data-toggle="tooltip" title="Edit" target="">
           <i class="glyphicon glyphicon-pencil" style="color:#f39c12"></i>
       </a> 
+      <a href="' . site_url('detail-guru/') . $pegGuru->id_user . '" class="btn btn-default btn-sm" data-toggle="tooltip" title="Detail" target="">
+          <i class="glyphicon glyphicon-eye-open
+          " style="color:#f39c12"></i>
+      </a>
       <a href="javascript:void(0)" onclick="hapusGuru(' . "'" . $pegGuru->id_user . "'" . ')" class="btn btn-default btn-sm" data-toggle="tooltip" title="Hapus" target="">
           <i class="glyphicon glyphicon-trash" style="color:#ff0000"></i>
       </a>';

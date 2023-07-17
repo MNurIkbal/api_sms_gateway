@@ -1,9 +1,3 @@
-<style>
-  /* div.dataTables_wrapper {
-    margin: 0 auto;
-    width: 65%;
-  } */
-</style>
 <section class="content">
   <div class="box box-danger">
     <div class="box-header with-border">
@@ -15,6 +9,16 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body">
+      <?php if($this->session->flashdata("success")) :  ?>
+        <div class="alert alert-success">
+          <?= $this->session->flashdata("success"); ?>
+        </div>
+        <?php endif; ?>
+      <?php if($this->session->flashdata("error")) :  ?>
+        <div class="alert alert-danger">
+          <?= $this->session->flashdata("error"); ?>
+        </div>
+        <?php endif; ?>
       <form action="" method="post" id="form-kelas">
         <div class="form-group row">
           <label for="kelas" class=" col-sm-2 text-center">Kelas</label>
@@ -30,20 +34,18 @@
     </div>
     <!-- /.box-body -->
     <div class="box-footer">
-      <div class="row">
-        <label for="dataKelas" class=" col-sm-2 text-center">Data Kelas</label>
-        <div class="col-sm-8">
-          <table class="table table-hover table-striped" style="width:100%" id="dataKelas">
-            <thead>
-              <th>No.</th>
-              <!-- <th>Kelas</th> -->
-              <th>Kelas</th>
-              <th>Aksi</th>
-            </thead>
-          </table>
-        </div>
-        <div class="col-sm-2"></div>
-      </div>
+      <div class="table-responsive">
+          
+
+            <table class="table table-hover table-striped" style="width:100%" id="dataKelas">
+              <thead>
+                <th>No.</th>
+                <!-- <th>Kelas</th> -->
+                <th>Kelas</th>
+                <th>Aksi</th>
+              </thead>
+            </table>
+          </div>
     </div>
   </div>
 </section>

@@ -47,6 +47,39 @@ class Mapel extends CI_Controller
     }
   }
 
+  public function edits()
+  {
+    $id = $this->session->userdata('id_user');
+    $id_siswa = $this->uri->segment(4);
+    
+    // var_dump($id_siswa);die();
+    $this->load->view('backend/layouts/wrapper', [
+      'content' => 'backend/admin/editMapel',
+      'title'   => 'Edit Data Mapel',
+      'profile' => $this->user_m->profile($id),
+      'mapel'  =>  $this->db->query("SELECT * FROM mapel WHERE id_mapel = '$id_siswa'")->row_array(),
+      'userdata' => $id,
+      'id'  =>  $id_siswa,
+      // 'dataKelas' => $this->kelas_m->edit($id_kelas)
+    ], FALSE);
+  }
+
+  public function update()
+  {
+    $id = $this->input->post('id');
+    $mapel = $this->input->post('mapel');
+
+    $result = $this->db->query("UPDATE mapel SET nama_mapel = '$mapel' WHERE id_mapel = '$id'");
+    if($result) {
+      $this->session->set_flashdata("success",'Data Berhasil Diupdate');
+      return redirect('mapel');
+    } else {
+      $this->session->set_flashdata("error",'Data Gagal Diupdate');
+      return redirect('mapel');
+
+    }
+  }
+
   public function getMapel()
   {
     $data = $this->mapel_m->dataMapel();
@@ -57,7 +90,7 @@ class Mapel extends CI_Controller
       $temp[] = htmlspecialchars($no++, ENT_QUOTES, 'UTF-8');
       $temp[] = htmlspecialchars($pegMapel->nama_mapel, ENT_QUOTES, 'UTF-8');
       $temp[] = '
-      <a href="' . site_url('edit-Mapel/') . $pegMapel->id_mapel . '" class="btn btn-default btn-sm" data-toggle="tooltip" title="Detail" target="">
+      <a href="' . site_url('admin/Mapel/edits/') . $pegMapel->id_mapel . '" class="btn btn-default btn-sm" data-toggle="tooltip" title="Detail" target="">
           <i class="glyphicon glyphicon-pencil" style="color:#f39c12"></i>
       </a> 
       <a href="javascript:void(0)" onclick="hapusMapel(' . "'" . $pegMapel->id_mapel . "'" . ')" class="btn btn-default btn-sm" data-toggle="tooltip" title="Hapus" target="">

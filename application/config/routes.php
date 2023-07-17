@@ -64,8 +64,10 @@ $route['add-guru'] = 'admin/DataGuru/addGuru';
 $route['data-siswa'] = 'admin/DataSiswa';
 $route['edit-siswa/(:any)'] = 'admin/DataSiswa/editSiswa/$1';
 $route['edit-guru/(:any)'] = 'admin/DataGuru/editGuru/$1';
+$route['detail-guru/(:any)'] = 'admin/DataGuru/detailGuru/$1';
 $route['edit-Kelas/(:any)'] = 'admin/Kelas/editKelas/$1';
 $route['add-siswa'] = 'admin/DataSiswa/addSiswa';
+$route['detail-siswa/(:any)'] = 'admin/DataSiswa/detailSiswa';
 $route['data-rekap'] = 'admin/DataRekap';
 
 //guru

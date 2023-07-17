@@ -9,15 +9,15 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body">
-      <form action="" method="post" id="form-kelas">
-    <!-- <input type="hidden" name="id_kelas" value="<?= $dataKelas->id_kelas; ?>"> -->
+      <form action="<?= base_url("admin/Mapel/update") ?>" method="post" id="form-kelas">
+    <input type="hidden" name="id" value="<?= $id; ?>">
         <div class="form-group row">
             <label for="kelas" class=" col-sm-2 text-center">Mapel</label>
           <div class="col-sm-5">
-            <input type="text" class="form-control" name="kelas" id="kelas" placeholder="Nama Kelas">
+            <input type="text" class="form-control" name="mapel" id="mapel" required placeholder="Nama Mapel" value="<?= $mapel['nama_mapel']; ?>">
           </div>
           <div class="col-sm-3">
-            <a class="btn btn-warning btn-block" id="save">Simpan <i class="fa fa-send"></i></a>
+            <button type="submit" class="btn btn-warning btn-block" >Simpan <i class="fa fa-send"></i></button>
           </div>
         </div>
       </form>
