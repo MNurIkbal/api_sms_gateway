@@ -219,22 +219,21 @@ class DataGuru extends CI_Controller
     ];
 
     $result = $this->user_m->saveEditGuru($data, $id_user);
-    $mapel_result = $input['mapel_id'];
+    $mapel_result = $input['mapel'];
+    
     foreach($mapel_result as $main) {
-      var_dump($main);
-      $this->db->query("DELETE FROM mapel_guru WHERE mapel_id = '$main' AND user_id = '$id_user'");
+      $this->db->query("DELETE FROM mapel_guru WHERE user_id = '$id_user'");
     }
-    die;
+    
 
     $now = date("Y-m-d H:i:s");
-    // foreach($mapel_result as $dua ) {
-      
-    //   $this->db->query("INSERT INTO mapel_guru VALUES('',
-    //   '$dua',
-    //   '$id_user',
-    //   '$now'
-    //   )");
-    // }
+    foreach($mapel_result as $dua ) {
+      $this->db->query("INSERT INTO mapel_guru VALUES('',
+      '$dua',
+      '$id_user',
+      '$now'
+      )");
+    }
     if($result) {
       $this->session->set_flashdata("success",'Data Berhasil Diupdate');
       return redirect("data-guru");

@@ -24,9 +24,11 @@ class Absensi extends CI_Controller
     $id_kelas = $this->input->post('kelas');
     // echo $id_kelas;
     // // die();
+    $mapel = $this->db->query("SELECT * FROM mapel_guru WHERE user_id = '$id'")->result_array();
     $this->load->view('backend/layouts/wrapper', [
       'content' => 'backend/guru/absensi',
       'title' => 'Absensi',
+      'mapel' =>  $mapel,
       'profile' => $this->user_m->profile($id),
       'kelas' => $this->kelas_m->getKelas(),
       'siswa' => $this->siswa_m->getSiswa($id_kelas),

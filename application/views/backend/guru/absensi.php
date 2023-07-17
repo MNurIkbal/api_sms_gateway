@@ -18,8 +18,7 @@
               <center>
                 <b>Absensi Siswa</b>
                 <p class="text-muted">Pilih kelas</p>
-                <select class="form-control" name="kelas" style="width:30%">
-                  <option value="" slected hidden>--Pilih Kelas--</option>
+                <select class="form-control" name="kelas" required style="width:30%">
                   <?php foreach ($kelas as $val) :
                     if ($this->input->post('kelas') == $val->id_kelas) {
                       $selected = "selected";
@@ -31,6 +30,18 @@
                   <?php endforeach; ?>
                 </select>
                 <br />
+                <select name="mapel" class="form-control" required id="select2" style="width: 30%;">
+                  <?php foreach($mapel as $sho) : ?>
+                    <?php 
+                    $id_mapels = $sho['mapel_id'];
+                      $nama_mapel = $this->db->query("SELECT * FROM mapel WHERE id_mapel = '$id_mapels'")->row_array();
+                      ?>
+                    <option value="<?= $sho['mapel_id']; ?>">
+                    <?= $nama_mapel['nama_mapel'] ?>
+                  </option>
+                    <?php endforeach; ?>
+                </select>
+                <br>
                 <button class="btn btn-success">Pilih</button>
               </center>
             </form>
