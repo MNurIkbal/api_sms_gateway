@@ -39,9 +39,7 @@
               <div class="col-sm-10">
                 <?php 
                 $id_agama= $user['id_agama'];
-                
                 $id_kelas = $user['id_kelas'];
-                // $mapels = $this->db->query("SELECT * FROM mapel_guru WHERE user_id = '$id_users'")->result_array();
                 $kelas = $this->db->query("SELECT * FROM kelas WHERE id_kelas = '$id_kelas'")->row_array();
                 $agama = $this->db->query("SELECT * FROM agama WHERE id_agama = '$id_agama'")->row_array();
                 ?>
@@ -84,4 +82,4 @@
     </div>
   </div>
 
-</section>
+</section>  

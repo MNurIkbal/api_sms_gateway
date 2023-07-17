@@ -71,12 +71,12 @@
                 <table class="table table-hover table-striped" style="width:100%">
                   <thead>
                     <th>Bulan/Tahun</th>
-                    <!-- <th>NIS</th> -->
-                    <!-- <th>Nama</th> -->
+                    <th>NIS</th>
+                    <th>Nama</th>
                     <th>Sakit</th>
                     <th>Ijin</th>
                     <th>Alpha</th>
-                    <th>Jumlah tidak hadir</th>
+                    <th>Hadir</th>
                   </thead>
                   <?php if ($_SERVER['REQUEST_METHOD'] === 'POST') { ?>
                     <tbody>
