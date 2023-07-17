@@ -10,6 +10,17 @@
         </div>
         <form action="<?= site_url('admin/DataGuru/saveGuru'); ?>" method="post" id="form-guru">
           <div class="box-body">
+            <?php if ($this->session->flashdata("error")) : ?>
+              <div class="alert alert-danger">
+                <?= $this->session->flashdata("error"); ?>
+              </div>
+            <?php endif; ?>
+            <?php if ($this->session->flashdata("success")) : ?>
+              <div class="alert alert-success">
+                <?= $this->session->flashdata("success"); ?>
+              </div>
+            <?php endif; ?>
+
             <div class="form-group row">
               <label for="nip" class=" col-sm-2">NIP/NUPTK</label>
               <div class="col-sm-10">
@@ -90,8 +101,7 @@
             <div class="form-group row">
               <label for="mapel" class=" col-sm-2">Mata Pelajaran</label>
               <div class="col-sm-10">
-                <select class="form-control" name="mapel">
-                  <option value="" selected hidden>--Pilih Mata Pelajaran--</option>
+                <select class="form-control " id="select2" name="mapel[]" multiple>
                   <?php foreach ($mapel as $ma) : ?>
                     <option value="<?= $ma->id_mapel; ?>"><?= $ma->nama_mapel ?></option>
                   <?php endforeach; ?>
@@ -103,7 +113,7 @@
                 <label class="col-sm-4 "></label>
                 <div class="row">
                   <div class="col-sm-2">
-                    <a class="btn btn-success btn-block" id="save">Simpan <i class="fa fa-send"></i></a>
+                    <button type="submit" class="btn btn-success btn-block" >Simpan <i class="fa fa-send"></i></button>
                   </div>
                   <div class="col-sm-2">
                     <a href="<?= site_url('data-guru'); ?>" class="btn btn-danger btn-block">Kembali <i class="fa fa-chevron-left"></i></a>
@@ -118,6 +128,9 @@
   </div>
 
 </section>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
 <script>
   //ajax save
   $('#save').click(function() {
@@ -210,4 +223,7 @@
       }
     });
   }
+  $(document).ready(function() {
+    $('#select2').select2();
+  });
 </script>

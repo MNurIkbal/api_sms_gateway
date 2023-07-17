@@ -13,6 +13,16 @@
         </div>
         <!-- <form action=""> -->
         <div class="box-body">
+        <?php if ($this->session->flashdata("error")) : ?>
+              <div class="alert alert-danger">
+                <?= $this->session->flashdata("error"); ?>
+              </div>
+            <?php endif; ?>
+        <?php if ($this->session->flashdata("success")) : ?>
+              <div class="alert alert-success">
+                <?= $this->session->flashdata("success"); ?>
+              </div>
+            <?php endif; ?>
           <table class="table table-bordered table-hover nowrap" id="guru" style="width:100%">
             <thead>
               <th>No.</th>
