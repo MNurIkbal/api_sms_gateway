@@ -58,7 +58,7 @@
           <label for="agama" class=" col-sm-2">Agama</label>
           <div class="col-sm-10">
             <select class="form-control" required name="agama">
-              <option value="" selected  hidden>--Pilih Agama--</option>
+              <option value="" selected hidden>--Pilih Agama--</option>
               <?php foreach ($agama as $val) : ?>
                 <option value="<?= $val->id_agama ?>" <?php if ($dataGuru->id_agama == $val->id_agama) {
                                                         echo 'selected';
@@ -108,19 +108,19 @@
         <div class="form-group row">
           <label for="mapel" class=" col-sm-2">Mata Pelajaran</label>
           <div class="col-sm-10">
-            
-          <select class="form-control" required id="select2" name="mapel[]" multiple>
-  <?php foreach ($mapel as $val) : ?>
-    <?php $isSelected = false; ?>
-    <?php foreach ($mapels as $rows) : ?>
-      <?php if ($val->id_mapel == $rows['mapel_id']) {
-        $isSelected = true;
-        break;
-      } ?>
-    <?php endforeach; ?>
-    <option value="<?= $val->id_mapel ?>" <?= $isSelected ? "selected" : ""; ?>><?= $val->nama_mapel ?></option>
-  <?php endforeach; ?>
-</select>
+
+            <select class="form-control" required id="select2" name="mapel[]" multiple>
+              <?php foreach ($mapel as $val) : ?>
+                <?php $isSelected = false; ?>
+                <?php foreach ($mapels as $rows) : ?>
+                  <?php if ($val->id_mapel == $rows['mapel_id']) {
+                    $isSelected = true;
+                    break;
+                  } ?>
+                <?php endforeach; ?>
+                <option value="<?= $val->id_mapel ?>" <?= $isSelected ? "selected" : ""; ?>><?= $val->nama_mapel ?></option>
+              <?php endforeach; ?>
+            </select>
 
           </div>
         </div>
