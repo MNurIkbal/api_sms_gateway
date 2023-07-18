@@ -4,34 +4,61 @@
       <!-- Custom Tabs (Pulled to the right) -->
       <div class="nav-tabs-custom">
         <ul class="nav nav-tabs pull-right">
-          <li class="pull-left header"><i class="fa fa-th"></i> Kelas</li>
+          <li class="pull-left header"><i class="fa fa-th"></i> Rekap Bulanan</li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane active">
-            <form method="post">
-              <center>
-                <b>Rekap Absen</b>
-                <p class="text-muted">Pilih kelas</p>
-                <select class="form-control" name="kelas" style="width:30%">
-                  <option value="" slected hidden>--Pilih Kelas--</option>
-                  <?php foreach ($kelas as $val) :
-                    if ($this->input->post('kelas') == $val->id_kelas) {
-                      $selected = "selected";
-                    } else {
-                      $selected = '';
-                    }
-                  ?>
-                    <option value="<?= $val->id_kelas ?>" <?= $selected ?>><?= $val->kelas; ?></option>
-                  <?php endforeach; ?>
-                </select>
-                <input type="hidden" name="mapel" value="<?= $this->session->userdata('id_mapel')?>">
-                    
-                <!-- <br /> -->
-                <!-- <input type="text" class="form-control date" id="datepickerTEXT" style="width:30%" value="08/2020"> -->
-                <br />
-                <button class="btn btn-success">Pilih</button>
-                
-              </center>
+            <?php if ($this->session->flashdata("error")) : ?>
+              <div class="alert alert-danger">
+                <?= $this->session->flashdata("error"); ?>
+              </div>
+            <?php endif ?>
+            <?php if ($this->session->flashdata("success")) : ?>
+              <div class="alert alert-success">
+                <?= $this->session->flashdata("success"); ?>
+              </div>
+            <?php endif ?>
+            <form method="post" action="<?= base_url("guru/DataRekap/prints"); ?>">
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label>kelas</label>
+                  <select class="form-control" name="kelas" required>
+                    <?php foreach ($kelas as $val) :
+                      if ($this->input->post('kelas') == $val->id_kelas) {
+                        $selected = "selected";
+                      } else {
+                        $selected = '';
+                      }
+                    ?>
+                      <option value="<?= $val->id_kelas ?>" <?= $selected ?>><?= $val->kelas; ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                  <br>
+                  <label>Pelajaran</label>
+                  <select name="mapel" id="mapel" class="form-control" required>
+                    <?php foreach ($pelajaran as $row) : ?>
+                      <?php
+                      $id_mapels = $row['mapel_id'];
+                      $pel = $this->db->query("SELECT * FROM mapel WHERE id_mapel = '$id_mapels'")->row_array();
+                      ?>
+                      <option value="<?= $row['mapel_id']; ?>"><?= $pel['nama_mapel']; ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="">Tanggal Mulai</label>
+                  <input type="date" class="form-control" required placeholder="" name="mulai">
+                  <br>
+                  <label for="">Tanggal Akhir</label>
+                  <input type="date" class="form-control" required placeholder="" name="akhir">
+                </div>
+              </div>
+
+              <br />
+              <button type="submit" class="btn btn-success">Pilih</button>
+
+
             </form>
           </div>
           <!-- /.tab-pane -->
@@ -41,73 +68,70 @@
       <!-- nav-tabs-custom -->
     </div>
 
-    <!-- <?php foreach ($absensi as $val) :
-            echo date("M", $val->time_in);
-            echo $val->keterangan;
-          endforeach; ?> -->
-    <form method="post" action="<?= site_url('cetak-rekap');?>">
+
+    <form method="post" action="<?= site_url('cetak-rekap'); ?>">
       <div class="col-md-12">
-        <!-- Custom Tabs (Pulled to the right) -->
+
         <div class="nav-tabs-custom">
           <ul class="nav nav-tabs pull-right">
             <li class="pull-left header"><i class="fa fa-users"></i> Data Rekap Absensi</li>
-            <?php if($_SERVER['REQUEST_METHOD'] === 'POST') :?>
-            <li class="pull-right header"><button class="btn btn-success btn-sm" formtarget="_blank"><i class="fa fa-print"></i> Cetak</button></li>
-            <?php endif;?>
+            <?php if ($_SERVER['REQUEST_METHOD'] === 'POST') : ?>
+              <li class="pull-right header"><button class="btn btn-success btn-sm" formtarget="_blank"><i class="fa fa-print"></i> Cetak</button></li>
+            <?php endif; ?>
           </ul>
-        <div class="tab-content">
-          <div class="tab-pane active">
-                <table class="table table-hover table-striped" style="width:100%">
-                  <thead>
-                    <th>Bulan/Tahun</th>
-                    <!-- <th>NIS</th> -->
-                    <!-- <th>Nama</th> -->
-                    <th>Sakit</th>
-                    <th>Ijin</th>
-                    <th>Alpha</th>
-                    <th>Jumlah tidak hadir</th>
-                  </thead>
-                  <?php if ($_SERVER['REQUEST_METHOD'] === 'POST') { ?>
-                    <tbody>
+          <div class="tab-content">
+            <div class="tab-pane active">
+              <table class="table table-hover table-striped" style="width:100%">
+                <thead>
+                  <th>Waktu</th>
+                  <th>NIS</th>
+                  <th>Nama</th>
+                  <th>Sakit</th>
+                  <th>Ijin</th>
+                  <th>Alpha</th>
+                  <th>Hadir</th>
+                </thead>
+                <?php if ($_SERVER['REQUEST_METHOD'] === 'POST') { ?>
+                  <tbody>
 
-                      <?php
-                      foreach ($absensi as $val) :
-                        $tot = $val->tSakit + $val->tIjin + $val->tAlpha;
-                      ?>
-                        <input type="hidden" name="kelas" value="<?= $kelask ?>">
-                        <input type="hidden" name="mapel" value="<?= $mapelk ?>">
-                        <tr>
-                          <td><?= $val->bulan . '/' . $val->tahun; ?></td>
-                          <td><?= $val->tSakit; ?></td>
-                          <td><?= $val->tIjin; ?></td>
-                          <td><?= $val->tAlpha; ?></td>
-                          <td><?= $tot; ?></td>
-                        </tr>
-                      <?php endforeach; ?>
-
-                    </tbody>
-                  <?php } else { ?>
-                    <tbody>
+                    <?php
+                    foreach ($absensi as $val) :
+                      $tot = $val->tSakit + $val->tIjin + $val->tAlpha;
+                    ?>
+                      <input type="hidden" name="kelas" value="<?= $kelask ?>">
+                      <input type="hidden" name="mapel" value="<?= $mapelk ?>">
                       <tr>
-                        <td colspan=5>
-                          <center>
-                            <small class="text-muted"><i>Pilih Kelas dan Mata Pelajaran</i></small>
-                          </center>
-                        </td>
+                        <td><?= $val->bulan . '/' . $val->tahun; ?></td>
+                        <td><?= $val->tSakit; ?></td>
+                        <td><?= $val->tIjin; ?></td>
+                        <td><?= $val->tAlpha; ?></td>
+                        <td><?= $tot; ?></td>
                       </tr>
-                    </tbody>
-                  <?php } ?>
-                </table>
-                <br />
+                    <?php endforeach; ?>
 
-                <!-- <button class="btn btn-primary" disabled>Kirim Absensi</button> -->
+                  </tbody>
+                <?php } else { ?>
+                  <tbody>
+                    <tr>
+                      <td colspan="7>
+                          <center>
+                            <small class=" text-muted text-center"><i>Pilih Kelas dan Mata Pelajaran</i></small>
+                        </center>
+                      </td>
+                    </tr>
+                  </tbody>
+                <?php } ?>
+              </table>
+              <br />
+
+
 
             </div>
-            <!-- /.tab-pane -->
+
           </div>
-          <!-- /.tab-content -->
+
         </div>
-        <!-- nav-tabs-custom -->
+
       </div>
     </form>
 

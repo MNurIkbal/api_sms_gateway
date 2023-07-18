@@ -19,24 +19,44 @@ class DataRekap extends CI_Controller
   public function index()
   {
     $id = $this->session->userdata('id_user');
-    $kelas = $this->input->post('kelas');
-    $mapel = $this->input->post('mapel');
+    $pelajaran = $this->db->query("SELECT * FROM mapel_guru WHERE user_id = '$id'")->result_array();
     $data = [
       'content' => 'backend/guru/dataRekap',
       'title'   => 'Rekap Bulanan',
+      'pelajaran' =>  $pelajaran,
       'profile' => $this->user_m->profile($id),
       'userdata' => $id,
-      'absensi' => $this->absensi_m->getLaporanPerKelas($kelas, $mapel),
-      'bulan' => $this->absensi_m->getBulan($kelas, $mapel),
       'kelas' => $this->kelas_m->getKelas(),
       'mapel' => $this->mapel_m->getMapel(),
-      'kelask' => $kelas,
-      'mapelk' => $mapel
+      
     ];
     $this->load->view('backend/layouts/wrapper', $data, FALSE);
-    // die();
-    // $kelas = 2;
-    // $mapel = 1;
+    
+  }
+
+  public function prints()
+  {
+    $id_kelas = $this->input->post('kelas');
+    $id_mapel = $this->input->post('mapel');
+
+    $mulai = $this->input->post('mulai');
+    $akhir = $this->input->post('akhir');
+    
+
+    if($akhir <= $mulai) {
+      $this->session->set_flashdata("error","Waktu Tidak Valid");
+      return redirect("gr/data-rekap");
+    }
+
+    $result = $this->db->query("SELECT * FROM rekap_absen WHERE kelas_id = '$id_kelas' AND mapel_id = '$id_mapel' AND created BETWEEN '$mulai' AND '$akhir'")->row_array();
+    if(!$result) {
+      $this->session->set_flashdata("error",'Data Tidak Ditemukan');
+      return redirect("gr/data-rekap");
+    }
+
+
+
+    
   }
 }
 

@@ -35,7 +35,7 @@ class Absensi extends CI_Controller
       'siswa' => $this->siswa_m->getSiswa($id_kelas),
       'userdata' => $id,
       'id_kelas' => $id_kelas,
-      'pelajaran'  =>$id_mapel
+      'pelajaran'  => $id_mapel
     ], FALSE);
   }
 
@@ -81,6 +81,7 @@ class Absensi extends CI_Controller
         $name_mapel = $nama_mapel['nama_mapel'];
         $waktu = date("d, F Y H:i:s");
         $pesan = "Pemberitahuan siswa bernama $nama kelas $name_kelas pelajaran $name_mapel hari ini tidak masuk sekolah di karenakan Alpha pada tanggal $waktu";
+
         // $endCode = urlencode($pesan);
         // $url = "https://websms.co.id/api/smsgateway-otp?token=$token&to=$tujuan&msg=$endCode";
 
@@ -95,27 +96,132 @@ class Absensi extends CI_Controller
         // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         // $result = curl_exec($ch);
 
-        // foreach($siswa as $masuk) {
-        //   $total = $this->db->query("SELECT * FROM rekap_absen WHERE siswa_id = '$masuk'")->row_array();
-        //   if($total) {
 
-        //   } else {
-        //     if($keterangan == "Hadir") {
 
-        //     } elseif($keterangan == "Alpha") {
-
-        //     } elseif($keterangan == "Ijin") {
-
-        //     } elseif($keterangan == "Sakit") {
-
-        //     } 
-        //   }
-        // }
+      }
+      $buat = date("Y-m-d");
+      $bulan = date("Y-m");
+      $total = $this->db->query("SELECT * FROM rekap_absen WHERE siswa_id = '$row' ORDER BY id DESC")->row_array();
+      if ($total) {
+        if ($bulan > date("Y-m", strtotime($total['created']))) {
+          if ($keterangan == "Hadir") {
+            $this->db->query("INSERT INTO rekap_absen VALUES('',
+                '$row',
+                '$id_kelas',
+                '$id_mapel',
+                '1',
+                '0',
+                '0',
+                '0',
+                '$buat'
+              )");
+          } elseif ($keterangan == "Alpha") {
+            $this->db->query("INSERT INTO rekap_absen VALUES('',
+              '$row',
+              '$id_kelas',
+              '$id_mapel',
+              '0',
+              '1',
+              '0',
+              '0',
+              '$buat'
+            )");
+          } elseif ($keterangan == "Ijin") {
+            $this->db->query("INSERT INTO rekap_absen VALUES('',
+              '$row',
+              '$id_kelas',
+              '$id_mapel',
+              '0',
+              '0',
+              '1',
+              '0',
+              '$buat'
+            )");
+          } elseif ($keterangan == "Sakit") {
+            $this->db->query("INSERT INTO rekap_absen VALUES('',
+              '$row',
+              '$id_kelas',
+              '$id_mapel',
+              '0',
+              '0',
+              '0',
+              '1',
+              '$buat'
+            )");
+          } else {
+            $this->session->set_flashdata('error', 'Data Gagal Ditambahkan');
+            return redirect('gr/absensi');
+          }
+        } else {
+          if ($keterangan == "Hadir") {
+            $total_hadir = $total['hadir'] + 1;
+            $this->db->query("UPDATE rekap_absen SET hadir = '$total_hadir' WHERE siswa_id = '$row' AND DATE_FORMAT(created, '%Y-%m') = '$bulan'");
+          } elseif ($keterangan == "Alpha") {
+            $total_alpha = $total['alpha'] + 1;
+            $this->db->query("UPDATE rekap_absen SET alpha = '$total_alpha' WHERE siswa_id = '$row' AND DATE_FORMAT(created, '%Y-%m') = '$bulan'");
+          } elseif ($keterangan == "Ijin") {
+            $total_izin = $total['izin'] + 1;
+            $this->db->query("UPDATE rekap_absen SET izin = '$total_izin' WHERE siswa_id = '$row' AND DATE_FORMAT(created, '%Y-%m') = '$bulan'");
+          } elseif ($keterangan == "Sakit") {
+            $total_sakit = $total['sakit'] + 1;
+            $this->db->query("UPDATE rekap_absen SET sakit = '$total_sakit' WHERE siswa_id = '$row' AND DATE_FORMAT(created, '%Y-%m') = '$bulan'");
+          } else {
+            $this->session->set_flashdata('error', 'Data Gagal Ditambahkan');
+            return redirect('gr/absensi');
+          }
+        }
+      } else {
+        if ($keterangan == "Hadir") {
+          $this->db->query("INSERT INTO rekap_absen VALUES('',
+              '$row',
+              '$id_kelas',
+              '$id_mapel',
+              '1',
+              '0',
+              '0',
+              '0',
+              '$buat'
+            )");
+        } elseif ($keterangan == "Alpha") {
+          $this->db->query("INSERT INTO rekap_absen VALUES('',
+            '$row',
+            '$id_kelas',
+            '$id_mapel',
+            '0',
+            '1',
+            '0',
+            '0',
+            '$buat'
+          )");
+        } elseif ($keterangan == "Ijin") {
+          $this->db->query("INSERT INTO rekap_absen VALUES('',
+            '$row',
+            '$id_kelas',
+            '$id_mapel',
+            '0',
+            '0',
+            '1',
+            '0',
+            '$buat'
+          )");
+        } elseif ($keterangan == "Sakit") {
+          $this->db->query("INSERT INTO rekap_absen VALUES('',
+            '$row',
+            '$id_kelas',
+            '$id_mapel',
+            '0',
+            '0',
+            '0',
+            '1',
+            '$buat'
+          )");
+        } else {
+          $this->session->set_flashdata('error', 'Data Gagal Ditambahkan');
+          return redirect('gr/absensi');
+        }
       }
     }
     $this->session->set_flashdata('success', 'Data Berhasil Ditambahkan');
     return redirect('gr/absensi');
   }
 }
-
-/* End of file Absensi.php */
