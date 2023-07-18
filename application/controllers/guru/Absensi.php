@@ -94,6 +94,23 @@ class Absensi extends CI_Controller
         // curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         // $result = curl_exec($ch);
+
+        // foreach($siswa as $masuk) {
+        //   $total = $this->db->query("SELECT * FROM rekap_absen WHERE siswa_id = '$masuk'")->row_array();
+        //   if($total) {
+
+        //   } else {
+        //     if($keterangan == "Hadir") {
+
+        //     } elseif($keterangan == "Alpha") {
+
+        //     } elseif($keterangan == "Ijin") {
+
+        //     } elseif($keterangan == "Sakit") {
+
+        //     } 
+        //   }
+        // }
       }
     }
     $this->session->set_flashdata('success', 'Data Berhasil Ditambahkan');
