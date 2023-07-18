@@ -5,7 +5,7 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body">
-      <img src="<?= base_url()?>assets/gambar/SMKN7-Bungo.PNG" style="max-width:100%">
+      <img src="<?= base_url()?>assets/gambar/SMKN7-Bungo.PNG" style="width:100%">
     </div>
     <!-- /.box-body -->
   </div>

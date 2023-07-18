@@ -81,20 +81,19 @@ class Absensi extends CI_Controller
         $name_mapel = $nama_mapel['nama_mapel'];
         $waktu = date("d, F Y H:i:s");
         $pesan = "Pemberitahuan siswa bernama $nama kelas $name_kelas pelajaran $name_mapel hari ini tidak masuk sekolah di karenakan Alpha pada tanggal $waktu";
+        $endCode = urlencode($pesan);
+        $url = "https://websms.co.id/api/smsgateway-otp?token=$token&to=$tujuan&msg=$endCode";
 
-        // $endCode = urlencode($pesan);
-        // $url = "https://websms.co.id/api/smsgateway-otp?token=$token&to=$tujuan&msg=$endCode";
+        $header = array(
+          'Accept: application/json',
+        );
 
-        // $header = array(
-        //   'Accept: application/json',
-        // );
-
-        // $ch = curl_init();
-        // curl_setopt($ch, CURLOPT_URL, $url);
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        // curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        // $result = curl_exec($ch);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        $result = curl_exec($ch);
 
 
 

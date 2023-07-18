@@ -47,11 +47,8 @@
                   </select>
                 </div>
                 <div class="col-md-6">
-                  <label for="">Tanggal Mulai</label>
-                  <input type="date" class="form-control" required placeholder="" name="mulai">
-                  <br>
-                  <label for="">Tanggal Akhir</label>
-                  <input type="date" class="form-control" required placeholder="" name="akhir">
+                  <label for="">Bulan</label>
+                  <input type="month" class="form-control" required placeholder="" name="mulai">
                 </div>
               </div>
 
@@ -76,52 +73,60 @@
           <ul class="nav nav-tabs pull-right">
             <li class="pull-left header"><i class="fa fa-users"></i> Data Rekap Absensi</li>
             <?php if ($_SERVER['REQUEST_METHOD'] === 'POST') : ?>
-              <li class="pull-right header"><button class="btn btn-success btn-sm" formtarget="_blank"><i class="fa fa-print"></i> Cetak</button></li>
+              <li class="pull-right header"><a href="<?= base_url("gr/cetak/$id_kelas/$mapel/$mulai"); ?>" class="btn btn-success bg-success " target="_blank"><i class="fa fa-print"></i> Cetak</a></li>
             <?php endif; ?>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active">
-              <table class="table table-hover table-striped" style="width:100%">
-                <thead>
-                  <th>Waktu</th>
-                  <th>NIS</th>
-                  <th>Nama</th>
-                  <th>Sakit</th>
-                  <th>Ijin</th>
-                  <th>Alpha</th>
-                  <th>Hadir</th>
-                </thead>
-                <?php if ($_SERVER['REQUEST_METHOD'] === 'POST') { ?>
-                  <tbody>
-
-                    <?php
-                    foreach ($absensi as $val) :
-                      $tot = $val->tSakit + $val->tIjin + $val->tAlpha;
-                    ?>
-                      <input type="hidden" name="kelas" value="<?= $kelask ?>">
-                      <input type="hidden" name="mapel" value="<?= $mapelk ?>">
+              <div class="table-responsive">
+                <table class="table table-hover table-striped" style="width:100%">
+                  <thead>
+                    <th>No</th>
+                    <th>NIS</th>
+                    <th>Nama</th>
+                    <th>Sakit</th>
+                    <th>Ijin</th>
+                    <th>Alpha</th>
+                    <th>Hadir</th>
+                    <th>Waktu</th>
+                  </thead>
+                  <?php if ($_SERVER['REQUEST_METHOD'] === 'POST') { ?>
+                    <tbody>
+  
+                      <?php
+                      $no = 1;
+                      foreach ($result as $val) :
+                        $id_siswas = $val['siswa_id'];
+                        $result_siswa = $this->db->query("SELECT * FROM siswa WHERE id_siswa = '$id_siswas'")->row_array();
+                      ?>
+                        <input type="hidden" name="kelas" value="<?= $id_kelas ?>">
+                        <input type="hidden" name="mapel" value="<?= $mapel ?>">
+                        <tr>
+                          <td><?= $no++; ?></td>
+                          <td><?= $result_siswa['nis']; ?></td>
+                          <td><?= $result_siswa['nama']; ?></td>
+                          <td><?= $val['sakit']; ?></td>
+                          <td><?= $val['izin']; ?></td>
+                          <td><?= $val['alpha']; ?></td>
+                          <td><?= $val['hadir']; ?></td>
+                          <td><?= date("F Y",strtotime($val['created'])); ?></td>
+                        </tr>
+                      <?php endforeach; ?>
+  
+                    </tbody>
+                  <?php } else { ?>
+                    <tbody>
                       <tr>
-                        <td><?= $val->bulan . '/' . $val->tahun; ?></td>
-                        <td><?= $val->tSakit; ?></td>
-                        <td><?= $val->tIjin; ?></td>
-                        <td><?= $val->tAlpha; ?></td>
-                        <td><?= $tot; ?></td>
+                        <td colspan="8">
+                            <center>
+                              <small class=" text-muted text-center"><i>Data Tidak Ada</i></small>
+                          </center>
+                        </td>
                       </tr>
-                    <?php endforeach; ?>
-
-                  </tbody>
-                <?php } else { ?>
-                  <tbody>
-                    <tr>
-                      <td colspan="7>
-                          <center>
-                            <small class=" text-muted text-center"><i>Pilih Kelas dan Mata Pelajaran</i></small>
-                        </center>
-                      </td>
-                    </tr>
-                  </tbody>
-                <?php } ?>
-              </table>
+                    </tbody>
+                  <?php } ?>
+                </table>
+              </div>
               <br />
 
 

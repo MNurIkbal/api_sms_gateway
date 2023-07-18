@@ -117,6 +117,14 @@ class Kelas extends CI_Controller
 
   public function hapusKelas($id)
   {
+    $rekap = $this->db->query("SELECT * FROM rekap_absen WHERE kelas_id = '$id'")->num_rows();
+    $sis = $this->db->query("SELECT * FROM siswa WHERE id_kelas = '$id'")->num_rows();
+    $use = $this->db->query("SELECT * FROM user WHERE id_kelas = '$id'")->num_rows();
+    if($rekap || $sis || $use) {
+      $this->session->set_flashdata("error",'Data Tidak Boleh Dihapus Karena Sudah Berelasi');
+      return redirect('kelas');
+      exit;
+    }
     $this->kelas_m->hapusKelas($id);
     echo json_encode(array("status" => TRUE));
   }

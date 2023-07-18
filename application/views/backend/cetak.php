@@ -86,64 +86,66 @@
 </style>
 
 </head>
-<body>
-    <div class="col-lg-12">
-        <br/>
-        <div class="text-center">
-            <img src="<?= base_url() ?>assets/gambar/logo/logo.png" id="poweredbyLogo" style="max-width:7%;">
+<body style="margin: 10px !important;">
+    <br/>
+    <h4 style="text-align: center;">Laporan Absensi Bulanan</h4>
+    <div class="text-center">
+        <img src="<?= base_url() ?>assets/gambar/logo/logo.png" id="poweredbyLogo" style="max-width:7%;">
+    </div>
+    <div class="">
+        <div class="form-group">
+            <label>Kelas : </label>
+            
+            <input type="text" class="form-control" value="<?= $kelas['kelas'];?>" disabled>
         </div>
-        <div class="container row">
-            <div class="form-group">
-                <label>Kelas : </label>
-                <input type="text" class="form-control" value="<?= $kelas->kelas;?>" disabled>
-            </div>
-            <div class="form-group">
-                <label>Mata Pelajaran : </label>
-                <input type="text" class="form-control" value="<?= $mapel->nama_mapel;?>" disabled>
-            </div>
-            <table class="table">
+        <div class="form-group">
+            <label>Mata Pelajaran : </label>
+            <input type="text" class="form-control" value="<?= $mapel['nama_mapel'];?>" disabled>
+        </div>
+        <div class="form-group">
+            <label>Bulan : </label>
+            <input type="text" class="form-control" value="<?= date("F Y",strtotime($bulans));?>" disabled>
+        </div>
+        <div class="table-responsive">  
+            <table class="table table-bordered table-hover">
                 <thead>
+                    
                     <tr>
-                        <!-- <th>Perhari</th> -->
-                        <th>Hari/Tanggal</th>
+                        <th>No</th>
                         <th>NIS</th>
-                        <th>Nama Siswa</th>
-                        <th>Status</th>
+                        <th>Nama</th>
+                        <th>Sakit</th>
+                        <th>Izin</th>
+                        <th>Alpha</th>
+                        <th>Hadir</th>
                     </tr>
                 </thead>
-                <?php if ($_SERVER['REQUEST_METHOD'] === 'POST') { ?>
+                
                     <tbody>
                       <?php
-                      $tmp = '';
-                      foreach ($cetak as $val) :
-                        // $tot = $val->tSakit + $val->tIjin + $val->tAlpha;
+                      $no =1;
+                      foreach ($result as $val) :
+                        $id_user = $val['siswa_id'];
+                        $sis = $this->db->query("SELECT * FROM siswa WHERE id_siswa = '$id_user'")->row_array();
                       ?>
                         <tr>
-                          <!-- <td rowspan="0"><?= format_hari(date("Y-m-d", $val->time_in)); ?></td> -->
-                          <td><?= format_indo(date("Y-m-d", $val->time_in)); ?></td>
-                          <td><?= $val->nis; ?></td>
-                          <td><?= $val->nama; ?></td>
-                          <td><?= $val->keterangan; ?></td>
+                          <td><?= $no++; ?></td>
+                          <td><?= $sis['nis']; ?></td>
+                          <td><?= $sis['nama']; ?></td>
+                          <td><?= $val['sakit']; ?></td>
+                          <td><?= $val['izin']; ?></td>
+                          <td><?= $val['alpha']; ?></td>
+                          <td><?= $val['hadir']; ?></td>
                         </tr>
                       <?php endforeach; ?>
 
                     </tbody>
-                  <?php }else{?>
-                    <tbody>
-                      <tr>
-                        <td colspan=5>
-                          <center>
-                            <small class="text-muted"><i>Pilih Kelas dan Mata Pelajaran</i></small>
-                          </center>
-                        </td>
-                      </tr>
-                    </tbody>
-                  <?php } ?>
+                  
             </table>
         </div>
     </div>
-<!-- <script>
+<script>
     window.print();
-</script> -->
+</script>
 </body>
 </html>

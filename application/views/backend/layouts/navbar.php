@@ -57,7 +57,7 @@
                                           if ($profile->tipe == 88) {
                                             echo 'Guru';
                                             echo '<small>NIP.'.$profile->nip.'</small>';
-                                            echo '<small>Mapel : ' . $profile->nama_mapel . '</small>';
+                                            
                                           } ?>
               </p>
             </li>

@@ -109,6 +109,7 @@ class Mapel extends CI_Controller
 
   public function hapusMapel($id)
   {
+    
     $this->mapel_m->hapusMapel($id);
     echo json_encode(array("status" => TRUE));
   }

@@ -70,7 +70,7 @@
 
       <!-- guru -->
       <?php if ($userdataTipe == 88) : ?>
-        <li class="<?php if ($this->uri->segment(1) == 'guru') {
+        <li class="<?php if ($this->uri->segment(1) == 'guru' && $this->uri->segment(3) != "prints") {
                       echo 'active';
                     } ?>">
           <a href="<?= site_url('guru'); ?>">
@@ -91,7 +91,7 @@
             <i class="fa fa-users"></i> <span>Data Siswa</span>
           </a>
         </li>
-        <li class="<?php if ($this->uri->segment(2) == 'data-rekap') {
+        <li class="<?php if ($this->uri->segment(2) == 'data-rekap' || $this->uri->segment(3) == 'prints') {
                       echo 'active';
                     } ?>">
           <a href="<?= site_url('gr/data-rekap'); ?>">

@@ -69,6 +69,7 @@ $route['edit-Kelas/(:any)'] = 'admin/Kelas/editKelas/$1';
 $route['add-siswa'] = 'admin/DataSiswa/addSiswa';
 $route['detail-siswa/(:any)'] = 'admin/DataSiswa/detailSiswa';
 $route['data-rekap'] = 'admin/DataRekap';
+$route['cetak_admin/(:any)/(:any)/(:any)'] = 'admin/DataRekap/cetak_admin';
 
 //guru
 $route['guru'] = 'guru/home';
@@ -76,6 +77,7 @@ $route['gr/absensi'] = 'guru/absensi';
 $route['gr/data-siswa'] = 'guru/DataSiswa';
 $route['gr/add-siswa'] = 'guru/DataSiswa/addSiswa';
 $route['gr/data-rekap'] = 'guru/DataRekap';
+$route['gr/cetak/(:any)/(:any)/(:any)'] = 'guru/DataRekap/cetak';
 $route['gr/pesan'] = 'guru/pesan';
 
 
